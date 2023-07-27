@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		{{include "/include/head.html"}}
+	</head>
+	<body>
+        {{include "/include/navbar.html" . }}
+        <section class="section">
+
+          <div class="container">
+            <h1 class="title">Ingress Misconfiguration Documents</h1>
+            <div class="columns">
+              {{ range $idx, $dirname := listFiles "/docs" }}
+              <div class="column">
+                {{ range $idy, $filename := listFiles (printf "/docs/%s" $dirname)}}
+                  {{ $markdownFilename := printf "/docs/%s/%s" $dirname $filename }}
+                  {{ $pathName := index (splitList "." $markdownFilename) 0}}
+                  {{$markdownFile := (include $markdownFilename | splitFrontMatter)}}
+                  {{$title := default $markdownFilename $markdownFile.Meta.title}}
+                  {{$description := default $markdownFilename $markdownFile.Meta.description }}
+                  <div class="box">
+                    <h1 class="title is-size-4">{{ $title }}</h1>
+                    <h2 class="subtitle is-size-5">{{ $description }}</h2>
+                    <a href={{ printf "\"%s\"" $pathName }}>
+                      <div class="buttons">
+                        <button class="button is-link">Open</button>
+                      </div>
+                    </a>
+                  </div>
+                {{ end }}
+              </div>
+              {{ end }}
+            </div>
+              
+          </div>
+      </section>
+        {{include "/include/footer.html"}}
+	</body>
+</html>

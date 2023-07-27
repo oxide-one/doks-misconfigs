@@ -1,0 +1,18 @@
+{
+	auto_https off
+}
+
+:8080 {
+	root * /src
+	file_server
+	encode gzip
+	templates
+
+	header /* {
+		Cache-Control: no-cache, no-store, must-revalidate, max-age=0
+	}
+
+	try_files {path}.html {path}
+	rewrite /docs/ingress/*    /docs.html
+
+}
